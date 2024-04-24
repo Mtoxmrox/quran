@@ -1,0 +1,22 @@
+{
+  "name": "openai",
+  "version": "1.0.1",
+  "description": "quran ayat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mtoxmrox/quran.git"
+  },
+  "keywords": [
+    "quran"
+  ],
+  "author": "king",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mtoxmrox/quran/issues"
+  },
+  "homepage": "https://github.com/Mtoxmrox/quran#readme"
+}

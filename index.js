@@ -1,34 +1,31 @@
-// index.js
-
 const axios = require('axios');
 
-async function getRandomVerse() {
-  try {
-    const response = await axios.get('https://api.alquran.cloud/v1/random/ayah');
-    const verse = response.data.data.ayah.text;
-    const verseNumber = response.data.data.numberInSurah;
-    const surah = response.data.data.surah.name;
+class OpenAI {
+  constructor(apiKey) {
+    this.apiKey = apiKey;
+    this.baseUrl = 'https://api.openai.com/v1';
+  }
 
-    return `${verse}\n[${surah} - ${verseNumber}]`;
-  } catch (error) {
-    console.error('Error fetching random verse:', error);
-    return 'Unable to fetch random verse at the moment.';
+  async getCompletion(prompt, maxTokens = 50, temperature = 0.7, topP = 1, frequencyPenalty = 0, presencePenalty = 0) {
+    try {
+      const response = await axios.post(`${this.baseUrl}/engines/text-davinci-002/completions`, {
+        prompt,
+        max_tokens: maxTokens,
+        temperature,
+        top_p: topP,
+        frequency_penalty: frequencyPenalty,
+        presence_penalty: presencePenalty
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      return response.data.choices[0].text.trim();
+    } catch (error) {
+      throw new Error(`Error fetching completion: ${error.message}`);
+    }
   }
 }
 
-async function getSurahInfo(surahNumber) {
-  try {
-    const response = await axios.get(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
-    const surahInfo = response.data.data;
-
-    return surahInfo;
-  } catch (error) {
-    console.error('Error fetching surah info:', error);
-    return 'Unable to fetch surah info at the moment.';
-  }
-}
-
-module.exports = {
-  getRandomVerse,
-  getSurahInfo
-};
+module.exports = OpenAI;
